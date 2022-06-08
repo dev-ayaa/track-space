@@ -1,8 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
 
-func main(){
+	"github.com/dev-ayaa/track-space/pkg/config"
 
-    fmt.Println("Project architecture loading")
+)
+
+const portNumber = ":8080"
+
+var app config.AppConfig
+
+func main() {
+
+	fmt.Println("Starting localhost server")
+
+	server := &http.Server{Addr: portNumber, Handler: Routes(&app)}
+	server.ListenAndServe()
+	// fmt.Println("Project architecture loading")
 }
