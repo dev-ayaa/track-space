@@ -1,18 +1,21 @@
 package main
 
 import (
-	"net/http"
+	// "net/http"
 
-	"github.com/go-chi/chi"
+	"github.com/gin-gonic/gin"
+	// "github.com/go-chi/chi"
 
-	"github.com/dev-ayaa/track-space/pkg/config"
-	"github.com/dev-ayaa/track-space/pkg/handler"
+	"github.com/yusuf/track-space/pkg/handler"
+	// "github.com/yusuf/track-space/pkg/config"
+	// "github.com/yusuf/track-space/pkg/handler"
 
 )
 
-func Routes(app *config.AppConfig) http.Handler {
-	mux := chi.NewRouter()
-	mux.Get("/", handler.HomePage)
+func Routes(routes *gin.Engine){
+	routes.GET("/", handler.HomePage())
+	routes.GET("/login", handler.LoginPage())
+	
 
-	return mux
+
 }

@@ -1,13 +1,27 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 
 )
 
-func HomePage(wr http.ResponseWriter, rq *http.Request) {
-	fmt.Println("Welcome to Track Space")
-	fmt.Sprintln("Hello Everyone Welcome to Track Space")
+// "fmt"
+// "net/http"
+
+// // fmt.Println("Welcome to Track Space
+// wr.Write([]byte(fmt.Sprintf("Hello World, Welcome to Track Space")))
+func HomePage() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "home.page.tmpl",gin.H{
+			
+		})
+	}
+}
+
+
+func LoginPage() gin.HandlerFunc{
+	return func(ctx *gin.Context) {}
 
 }
