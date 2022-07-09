@@ -7,21 +7,16 @@ import (
 
 )
 
-// "fmt"
-// "net/http"
-
-// // fmt.Println("Welcome to Track Space
-// wr.Write([]byte(fmt.Sprintf("Hello World, Welcome to Track Space")))
+//HomePage handler to display the home page of the application
 func HomePage() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "home.page.tmpl",gin.H{
-			
-		})
+		ctx.HTML(http.StatusOK, "home.page.tmpl", gin.H{})
 	}
 }
 
-
-func LoginPage() gin.HandlerFunc{
-	return func(ctx *gin.Context) {}
-
+//LoginPage handler for the user to sign up for an account  and login as well 
+func LoginPage() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.HTML(http.StatusOK, "login.page.tmpl", gin.H{})
+	}
 }
