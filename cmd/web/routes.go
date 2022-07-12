@@ -12,10 +12,8 @@ import (
 
 )
 
-func Routes(routes *gin.Engine){
-	routes.GET("/", handler.HomePage())
-	routes.GET("/login", handler.LoginPage())
-	
-
+func Routes(routes *gin.Engine) {
+	routes.GET("/", handler.AppRepo.HomePage())
+	routes.GET("/login", handler.AppRepo.LoginPage())
 
 }

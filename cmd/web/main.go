@@ -7,13 +7,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/yusuf/track-space/pkg/config"
 	"github.com/yusuf/track-space/pkg/data"
-
+	"github.com/yusuf/track-space/pkg/dbdriver"
+	"github.com/yusuf/track-space/pkg/handler"
 )
 
 var app config.AppConfig
+var user *mongo.Collection = data.UserData(dbdriver.Client, "user")
+var mail *mongo.Collection = data.MailData(dbdriver.Client, "mail")
 
 func main() {
 
@@ -26,18 +30,16 @@ func main() {
 		return
 	}
 
-	mongodb_uri := os.Getenv("MONGODB_URI")
-	if mongodb_uri == "" {
-		log.Println("mongodb cluster uri not found : ")
-	}
-
-
 	//Setting up the database connection for mongoDB
-	err = data.DatabaseConnection(mongodb_uri)
-	if err != nil{
-		log.Println("error connecting to database")
-		log.Panic(err)
-	}
+	//  = data.DatabaseConnection()
+	// if err != nil{
+	// 	log.Println("error connecting to database")
+	// 	log.Panic(err)
+	// }
+	
+	repo := handler.NewRepository(&app,user, mail)
+	handler.NewHandler(repo)
+
 
 
 	portNumber := os.Getenv("PORTNUMBER")
