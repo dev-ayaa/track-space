@@ -1,30 +1,19 @@
 package data
 
 import (
-	"context"
-	"log"
-	"time"
-
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func DatabaseConnection(uri string) error {
-	ctx, cancelCtx := context.WithTimeout(context.Background(), 100*time.Second)
-	defer cancelCtx()
+//Setting up the database for the user data collection
+func UserData(dbClient *mongo.Client, collectionName string) *mongo.Collection {
+	var userCollection *mongo.Collection
+	userCollection = dbClient.Database("Track_Space").Collection(collectionName)
+	return userCollection
+}
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
-	if err != nil {
-		log.Panic(err)
-	}
-
-	defer func() {
-		if err = client.Disconnect(ctx); err != nil {
-			log.Fatal(err)
-			return
-		}
-	}()
-
-	return nil
-
+//Setting up the database for the mail data collection
+func MailData(dbClient *mongo.Client, collectionName string) *mongo.Collection {
+	var mailCollection *mongo.Collection
+	mailCollection = dbClient.Database("Track_Space").Collection(collectionName)
+	return mailCollection
 }
