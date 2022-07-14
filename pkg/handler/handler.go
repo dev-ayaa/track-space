@@ -1,6 +1,7 @@
 package handler
 
 import (
+	// "log"?
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,22 +12,21 @@ import (
 
 //Implement the repository pattern to access multiple package all at once
 
-
 //Repository : this will give me access to the app configuration package
 //and the database collections as well
 type Repository struct {
-	App_config *config.AppConfig
-	User_col   *mongo.Collection
-	Mail_col   *mongo.Collection
+	AppConfig *config.AppConfig
+	UserCol   *mongo.Collection
+	MailCol   *mongo.Collection
 }
 
 var AppRepo *Repository
 
-func NewRepository(app_config *config.AppConfig, user_col *mongo.Collection, mail_col *mongo.Collection) *Repository {
+func NewRepository(appConfig *config.AppConfig, userCol *mongo.Collection, mailCol *mongo.Collection) *Repository {
 	return &Repository{
-		App_config: app_config,
-		User_col:   user_col,
-		Mail_col:   mail_col,
+		AppConfig: appConfig,
+		UserCol:   userCol,
+		MailCol:   mailCol,
 	}
 }
 func NewHandler(r *Repository) {
@@ -37,7 +37,12 @@ func NewHandler(r *Repository) {
 func (rp *Repository) HomePage() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// rp.User_col.CountDocuments()
-		ctx.HTML(http.StatusOK, "home.page.tmpl", gin.H{})
+		// ctx.Header()
+		b := ctx.Request.Header.Get("X-FORWARDED-FOR")
+
+		a := ctx.Request.RemoteAddr
+		// a:=ctx.ClientIP()
+		ctx.HTML(http.StatusOK, "home.page.tmpl", gin.H{"ip": a, "s": b})
 	}
 }
 

@@ -13,6 +13,7 @@ import (
 	"github.com/yusuf/track-space/pkg/data"
 	"github.com/yusuf/track-space/pkg/dbdriver"
 	"github.com/yusuf/track-space/pkg/handler"
+	// "github.com/yusuf/track-space/pkg/ipaddress"
 )
 
 var app config.AppConfig
@@ -27,42 +28,37 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("No .env file available")
-		return
 	}
-
-	//Setting up the database connection for mongoDB
-	//  = data.DatabaseConnection()
-	// if err != nil{
-	// 	log.Println("error connecting to database")
-	// 	log.Panic(err)
-	// }
-	
-	repo := handler.NewRepository(&app,user, mail)
+	// fmt.Println(ipaddress.UserIpAddress())
+	repo := handler.NewRepository(&app, user, mail)
 	handler.NewHandler(repo)
 
-
-
 	portNumber := os.Getenv("PORTNUMBER")
-	if portNumber == ""{
+	if portNumber == "" {
 		log.Println("No local server port number created!")
 	}
 
 	//
-	app_router := gin.New()
+	appRouter := gin.New()
+	err = appRouter.SetTrustedProxies([]string{"127.0.0.1"})
+	if err != nil {
+		log.Println(err)
+		log.Println("cannot access untrusted server proxy")
 
-	app_router.Use(gin.Logger(), gin.Recovery())
+	}
+
+	appRouter.Use(gin.Logger(), gin.Recovery())
 
 	//this is to verify a list of the html/tmpl
 	//and render the correct template with it templates data
-	app_router.SetFuncMap(template.FuncMap{})
+	appRouter.SetFuncMap(template.FuncMap{})
 
-	app_router.LoadHTMLGlob("templates/*")
+	appRouter.LoadHTMLGlob("templates/*")
 
-	Routes(app_router)
+	Routes(appRouter)
 
-	err = app_router.Run(portNumber)
+	err = appRouter.Run(portNumber)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

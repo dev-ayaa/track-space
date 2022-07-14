@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+
 	// "os"
 	"time"
 
@@ -12,15 +14,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-
 var Client *mongo.Client = DatabaseConnection()
 
 func DatabaseConnection() *mongo.Client {
-	
-	// mongodb_uri := os.Getenv("MONGODB_URI")
-	// if mongodb_uri == "" {
-	// 	log.Println("mongodb cluster uri not found : ")
-	// }
+
+	mongodbUri := os.Getenv("MONGODB_URI")
+	if mongodbUri == "" {
+		log.Println("mongodb cluster uri not found : ")
+	}
+	fmt.Println(mongodbUri)
 
 	// authMechanism := options.Credential{
 	// 	AuthMechanism: "SCRAM-SHA-256",
@@ -34,6 +36,8 @@ func DatabaseConnection() *mongo.Client {
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://ayaaakinleye:2701Akin2000@cluster0.byrpjo8.mongodb.net/test"))
 	//.SetAuth(authMechanism))
+	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongodbUri))
+
 	if err != nil {
 		log.Panic(err)
 	}
