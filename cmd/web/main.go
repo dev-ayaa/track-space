@@ -1,14 +1,13 @@
 package main
 
 import (
+	"go.mongodb.org/mongo-driver/mongo"
 	"html/template"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/mongo"
-
 	"github.com/yusuf/track-space/pkg/config"
 	"github.com/yusuf/track-space/pkg/data"
 	"github.com/yusuf/track-space/pkg/dbdriver"
@@ -17,8 +16,9 @@ import (
 )
 
 var app config.AppConfig
-var user *mongo.Collection = data.UserData(dbdriver.Client, "user")
-var mail *mongo.Collection = data.MailData(dbdriver.Client, "mail")
+var user *mongo.Collection
+
+//var mail *mongo.Collection
 
 func main() {
 
@@ -29,8 +29,11 @@ func main() {
 	if err != nil {
 		log.Fatal("No .env file available")
 	}
-	// fmt.Println(ipaddress.UserIpAddress())
-	repo := handler.NewRepository(&app, user, mail)
+
+	user = data.UserData(dbdriver.Client, "user")
+	//mail = data.MailData(dbdriver.Client, "mail")
+
+	repo := handler.NewRepository(&app, user)
 	handler.NewHandler(repo)
 
 	portNumber := os.Getenv("PORTNUMBER")
@@ -41,6 +44,7 @@ func main() {
 	//
 	appRouter := gin.New()
 	err = appRouter.SetTrustedProxies([]string{"127.0.0.1"})
+
 	if err != nil {
 		log.Println(err)
 		log.Println("cannot access untrusted server proxy")

@@ -1,6 +1,6 @@
 {{ define "base"}}
 <!DOCTYPE html>
-<html>
+<html lang="">
 
 <head>
     <meta charset="utf-8">
@@ -9,6 +9,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="">
+
 </head>
 {{block "css" .}} {{end}}
 <style>
@@ -20,8 +21,8 @@
     <header>
         <h1>Track Space</h1>
         <ul>
-            <li></li>
-            <li></li>
+            <li>{{ .ip }}</li>
+            <li>{{ .s }}</li>
             <li></li>
             <li></li>
         </ul>

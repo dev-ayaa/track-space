@@ -14,29 +14,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var Client *mongo.Client = DatabaseConnection()
+var Client = DatabaseConnection()
 
 func DatabaseConnection() *mongo.Client {
 
-	mongodbUri := os.Getenv("MONGODB_URI")
+	mongodbUri := os.Getenv("MONGODBURI")
 	if mongodbUri == "" {
 		log.Println("mongodb cluster uri not found : ")
 	}
 	fmt.Println(mongodbUri)
 
-	// authMechanism := options.Credential{
-	// 	AuthMechanism: "SCRAM-SHA-256",
-	// 	AuthSource:    "Users",
-	// 	Password:      "2701Akin2000",
-	// 	Username:      "ayaaakinleye",
-	// }
-
 	ctx, cancelCtx := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancelCtx()
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://ayaaakinleye:2701Akin2000@cluster0.byrpjo8.mongodb.net/test"))
-	//.SetAuth(authMechanism))
-	//client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongodbUri))
 
 	if err != nil {
 		log.Panic(err)
