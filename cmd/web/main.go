@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go.mongodb.org/mongo-driver/mongo"
+	"context"
 	"html/template"
 	"log"
 	"os"
@@ -12,29 +12,33 @@ import (
 	"github.com/yusuf/track-space/pkg/data"
 	"github.com/yusuf/track-space/pkg/dbdriver"
 	"github.com/yusuf/track-space/pkg/handler"
-	// "github.com/yusuf/track-space/pkg/ipaddress"
 )
 
 var app config.AppConfig
-var user *mongo.Collection
-
-//var mail *mongo.Collection
 
 func main() {
 
 	app.AppInProduction = false
 	app.UseTempCache = false
 
+	var Client = dbdriver.DatabaseConnection()
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("No .env file available")
 	}
 
-	user = data.UserData(dbdriver.Client, "user")
-	//mail = data.MailData(dbdriver.Client, "mail")
+	user := data.UserData(Client, "user")
+	//mail = data.MailData(Client, "mail")
 
-	repo := handler.NewRepository(&app, user)
-	handler.NewHandler(repo)
+	defer func() {
+		if err = Client.Disconnect(context.TODO()); err != nil {
+			log.Fatal(err)
+			return
+		}
+	}()
+
+	repo := handler.NewAppHandler(&app, user)
 
 	portNumber := os.Getenv("PORTNUMBER")
 	if portNumber == "" {
@@ -59,7 +63,7 @@ func main() {
 
 	appRouter.LoadHTMLGlob("templates/*")
 
-	Routes(appRouter)
+	Routes(appRouter, *repo)
 
 	err = appRouter.Run(portNumber)
 	if err != nil {

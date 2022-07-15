@@ -2,12 +2,11 @@ package handler
 
 import (
 	"context"
-	"go.mongodb.org/mongo-driver/bson"
 	"log"
+	"net/http"
 	"time"
 
-	// "log"?
-	"net/http"
+	"go.mongodb.org/mongo-driver/bson"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,45 +14,38 @@ import (
 	"github.com/yusuf/track-space/pkg/config"
 )
 
-//Implement the repository pattern to access multiple package all at once
-
-//Repository : this will give me access to the app configuration package
-//and the database collections as well
-type Repository struct {
+// AppHandler Implement the repository pattern to access multiple package all at once
+// this will give me access to the app configuration package
+// and the database collections as well
+type AppHandler struct {
 	AppConfig *config.AppConfig
 	UserCol   *mongo.Collection
-	//MailCol   *mongo.Collection
+	// MailCol   *mongo.Collection
 }
 
-var AppRepo *Repository
-
-func NewRepository(appConfig *config.AppConfig, userCol *mongo.Collection) *Repository {
-	return &Repository{
+func NewAppHandler(appConfig *config.AppConfig, userCol *mongo.Collection) *AppHandler {
+	return &AppHandler{
 		AppConfig: appConfig,
 		UserCol:   userCol,
-		//MailCol:   mailCol,
+		// MailCol:   mailCol,
 	}
 }
-func NewHandler(r *Repository) {
-	r = AppRepo
-}
 
-//HomePage handler to display the home page of the application
-func (rp *Repository) HomePage() gin.HandlerFunc {
+// HomePage handler to display the home page of the application
+func (rp *AppHandler) HomePage() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		//var user model.User
-		//if err := c.BindJSON(&user); err != nil {
-		//	c.Header("Content-Type", "application/json")
-		//	c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot verify user model"})
-		//	return
-		//}
-
 		ctx, cancelCtx := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancelCtx()
-		var documents = []interface{}{
+		documents := []interface{}{
 			bson.D{
-				{"first_name", "Yusuf"},
+				{Key: "first_name", Value: "Yusuf"},
+				{Key: "last_name", Value: "Akinleye"},
+				{Key: "email", Value: "ayaaakinleye@gmail,com"},
+				{Key: "stack", Value: bson.A{"Go lang", "Python", "MongoDB"}},
+				{Key: "project_details", Value: bson.A{"track-space", bson.A{"gin-framework", "mongoDB Atlas", "Built-ins Packages"}, time.Now(), time.Now(), time.Second, "Work-Management System"}},
+			},
+			bson.D{
+				{Key: "first_name", Value: "Yusuf"},
 				{"last_name", "Akinleye"},
 				{"email", "ayaaakinleye@gmail,com"},
 				{"stack", bson.A{"Go lang", "Python", "MongoDB"}},
@@ -61,12 +53,13 @@ func (rp *Repository) HomePage() gin.HandlerFunc {
 			},
 		}
 
-		result, err := rp.UserCol.InsertOne(ctx, documents)
+		result, err := rp.UserCol.InsertMany(ctx, documents)
 		if err != nil {
+			log.Println(err)
 			log.Println("Cannot insert document in the database")
 			return
 		}
-		log.Println(result.InsertedID)
+		log.Println(result.InsertedIDs)
 		//var result bson.M
 		//
 		//err := rp.UserCol.FindOne(ctx, bson.D{{"first_name", "Yusuf"}}).Decode(&result)
@@ -78,12 +71,11 @@ func (rp *Repository) HomePage() gin.HandlerFunc {
 		c.IndentedJSON(http.StatusOK, result)
 		a := c.Request.RemoteAddr
 		c.HTML(http.StatusOK, "home.page.tmpl", gin.H{"ip": a})
-
 	}
 }
 
-//LoginPage handler for the user to sign up for an account  and login as well
-func (rp *Repository) LoginPage() gin.HandlerFunc {
+// LoginPage handler for the user to sign up for an account  and login as well
+func (rp *AppHandler) LoginPage() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.page.tmpl", gin.H{})
 	}
