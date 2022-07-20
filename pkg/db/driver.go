@@ -1,11 +1,9 @@
-package dbdriver
+package db
 
 import (
 	"context"
 	"fmt"
 	"log"
-	"os"
-
 	// "os"
 	"time"
 
@@ -14,16 +12,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func DatabaseConnection() *mongo.Client {
-	mongodbUri := os.Getenv("MONGODBURI")
-	if mongodbUri == "" {
-		log.Println("mongodb cluster uri not found : ")
-	}
-	fmt.Println(mongodbUri)
+func DatabaseConnection(uri string) *mongo.Client {
 	ctx, cancelCtx := context.WithTimeout(context.Background(), 100*time.Second)
 	defer cancelCtx()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://ayaaakinleye:2701Akin2000@cluster0.byrpjo8.mongodb.net/test"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri))
 
 	if err != nil {
 
