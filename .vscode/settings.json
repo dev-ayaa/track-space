@@ -1,0 +1,6 @@
+{
+    "files.autoSave": "afterDelay",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.fontFamily": "'DejaVu Sans Mono','monospace', monospace, 'monospace', monospace",
+    "workbench.colorTheme": "GitHub Light"
+}
