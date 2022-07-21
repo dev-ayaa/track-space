@@ -2,18 +2,17 @@ package main
 
 import (
 	"context"
-	"github.com/gin-contrib/sessions/cookie"
-	"html/template"
-	"log"
-	"os"
-
 	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/yusuf/track-space/pkg/config"
 	"github.com/yusuf/track-space/pkg/controller"
 	"github.com/yusuf/track-space/pkg/data"
 	"github.com/yusuf/track-space/pkg/db"
+	"html/template"
+	"log"
+	"os"
 )
 
 var app config.AppConfig
@@ -68,6 +67,7 @@ func main() {
 	}
 
 	appRouter.Use(gin.Logger(), gin.Recovery())
+
 	keyWare := cookie.NewStore([]byte("appKey"))
 	appRouter.Use(sessions.Sessions("session", keyWare))
 
@@ -76,8 +76,7 @@ func main() {
 	appRouter.SetFuncMap(template.FuncMap{})
 
 	appRouter.Static("/static", "./static")
-	//appRouter.StaticFS("/static", http.Dir("track-space"))
-	//appRouter.StaticFile("/favicon.ico", "./resources/favicon.ico")
+
 	appRouter.LoadHTMLGlob("templates/*.tmpl")
 
 	Routes(appRouter, *repo)

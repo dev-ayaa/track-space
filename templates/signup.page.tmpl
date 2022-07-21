@@ -6,24 +6,24 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Track-space Login page </title>
-    <link href="bootstrap.css" rel="stylesheet">
-    <link href="bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/login.css" rel="stylesheet">
+    <link href="/static/bootstrap.css" rel="stylesheet">
+{{/*    <link href="bootstrap.min.css" rel="stylesheet">*/}}
+    <link href="/static/css/login.css" rel="stylesheet">
 </head>
 
 <body>
 <section id="login-form">
-    <form action="" method="post">
+    <form action="/sign-up" method="post">
         <h1>Track-space</h1>
         <div class="grid-container">
             <div class="signUp-header mb-3">
                 <p>Sign up for your account</p>
             </div>
             <div class="mb-3">
-                <input aria-label="Email" class="form-control" placeholder="Enter Email" type="text">
+                <input aria-label="Email" class="form-control" placeholder="Enter Email" type="text" name="email">
             </div>
             <div class="mb-3">
-                <input aria-label="Password" class="form-control" placeholder="Enter Password" type="text">
+                <input aria-label="Password" class="form-control" placeholder="Enter Password" type="password" name="password">
             </div>
             <div class="terms mb-3">
                 <p>By signing up, you confirm that you have read and accept our <span>Terms of
@@ -37,19 +37,19 @@
             </div>
             <div class="alt-login mb-3">
                 <button class=" bt w-75 btn btn-md" type="submit">
-                    <a class="bt-link" href="#"><img alt="" src="static/image/google-48x48-675827.png" srcset="">
+                    <a class="bt-link" href="#"><img alt="" src="/static/image/google-48x48-675827.png" srcset="">
                         With Google
                     </a>
                 </button>
                 <br>
                 <button class=" bt w-75 btn btn-md" type="submit">
-                    <a class="bt-link" href="#"><img alt="" src="static/image/github-48x48-675821.png" srcset="">
+                    <a class="bt-link" href="#"><img alt="" src="/static/image/github-48x48-675821.png" srcset="">
                         With Github
                     </a>
                 </button>
                 <br>
                 <button class=" bt w-75 btn btn-md" type="submit">
-                    <a class="bt-link" href="#"><img alt="" src="static/image/amazon-48x48-675861.png" srcset="">
+                    <a class="bt-link" href="#"><img alt="" src="/static/image/amazon-48x48-675861.png" srcset="">
                         With Amazon
                     </a>
                 </button>
