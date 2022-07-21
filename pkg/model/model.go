@@ -8,17 +8,17 @@ import (
 
 type User struct {
 	ID             primitive.ObjectID `json:"_id" bson:"_id"`
-	FirstName      string             `json:"first_name" validate:"required"`
-	LastName       string             `json:"last_name" validate:"required"`
-	Email          string             `json:"email" validate:"required"`
-	Password       string             `json:"password" validate:"required"`
-	YrsOfExp       int32              `json:"yrs_of_exp"`
-	Location       string             `json:"location" validate:"required"`
-	PhoneNumber    string             `json:"phone_number" validate:"required"`
-	IPAddress      string             `json:"ip_address"`
-	UserType       []string           `json:"user_type"`
-	Stack          []string           `json:"stack"`
-	ProjectDetails []Project          `json:"project_details" bson:"project_details"`
+	FirstName      string             `form:"first_name" json:"first_name" Usage:"required max=32 min=3" binding:"required max=32 min=3"`
+	LastName       string             `form:"last_name" json:"last_name" Usage:"required max=32 min=3" binding:"required max=32 min=3"`
+	Email          string             `form:"email" json:"email" Usage:"email required" binding:"required max=32 min=3" `
+	Password       string             `form:"password" json:"password" Usage:"required_with=Email alphanum" binding:"required max=32 min=3"`
+	YrsOfExp       int32              `form:"yrs_of_exp" json:"yrs_of_exp" Usage:"numeric omitempty"`
+	Location       string             `form:"location" json:"location" Usage:"required" binding:"required max=32 min=3"`
+	PhoneNumber    string             `form:"phone_number" json:"phone_number" Usage:"required max=15 min=8" binding:"required max=32 min=3"`
+	IPAddress      string             `form:"ip_address" json:"ip_address"`
+	UserType       []string           `form:"user_type" json:"user_type" Usage:"omitempty"`
+	Stack          []string           `form:"stack" json:"stack" Usage:"omitempty"`
+	ProjectDetails []Project          `form:"project_details" json:"project_details" bson:"project_details"`
 	CreatedAt      time.Time          `json:"created_at"`
 	UpdatedAt      time.Time          `json:"updated_at"`
 }
