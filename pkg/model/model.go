@@ -12,10 +12,11 @@ type User struct {
 	LastName       string             `form:"last_name" json:"last_name" Usage:"required max=32 min=3" binding:"required max=32 min=3"`
 	Email          string             `form:"email" json:"email" Usage:"email required" binding:"required max=32 min=3" `
 	Password       string             `form:"password" json:"password" Usage:"required_with=Email alphanum" binding:"required max=32 min=3"`
-	YrsOfExp       int32              `form:"yrs_of_exp" json:"yrs_of_exp" Usage:"numeric omitempty"`
-	Location       string             `form:"location" json:"location" Usage:"required" binding:"required max=32 min=3"`
+	YrsOfExp       string             `form:"yrs_of_exp" json:"yrs_of_exp" Usage:"numeric omitempty"`
+	Country        string             `form:"country" json:"country" Usage:"required" binding:"required max=32 min=3"`
 	PhoneNumber    string             `form:"phone_number" json:"phone_number" Usage:"required max=15 min=8" binding:"required max=32 min=3"`
 	IPAddress      string             `form:"ip_address" json:"ip_address"`
+	Address        string             `form:"address" json:"address" Usage:"required" binding:"required max=32 min=3"`
 	UserType       []string           `form:"user_type" json:"user_type" Usage:"omitempty"`
 	Stack          []string           `form:"stack" json:"stack" Usage:"omitempty"`
 	ProjectDetails []Project          `form:"project_details" json:"project_details" bson:"project_details"`
