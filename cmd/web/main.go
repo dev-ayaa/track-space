@@ -77,7 +77,7 @@ func main() {
 
 	appRouter.Static("/static", "./static")
 
-	appRouter.LoadHTMLGlob("templates/*.tmpl")
+	appRouter.LoadHTMLGlob("templates/*.html")
 
 	Routes(appRouter, *repo)
 
